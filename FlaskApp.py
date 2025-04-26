@@ -5,11 +5,12 @@ import hashlib
 import json
 import sqlite3
 import logging
-import threading  # Added this import to fix the error
+import threading
+import os
 
 # Hardcoded configurations for testing
-TOKEN = "8113977650:AAHaM7k7Rt3OHOmgJf1KwnFOSZ5y-wJXjqk"
-NOWPAYMENTS_IPN_SECRET = "MjL3K8sb2uOMR3kP6bUgmWB0L3t06D6n"  # Replace with your actual IPN secret
+TOKEN = "8098677493:AAEj4y1Yc6R3xS-kxoQZ2StLVl4uFvmkeCg"
+NOWPAYMENTS_IPN_SECRET = os.getenv('NOWPAYMENTS_IPN_SECRET', "MjL3K8sb2uOMR3kP6bUgmWB0L3t06D6n")  # Use environment variable if available
 ADMIN_CHAT_ID = "8191309122"
 SECOND_ADMIN_CHAT_ID = "6137428183"
 
@@ -24,7 +25,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # Database setup
 db_conn = sqlite3.connect('bot_data.db', check_same_thread=False)
-db_lock = threading.Lock()  # This line now works with the threading import
+db_lock = threading.Lock()
 
 # Safe message sending
 def safe_send_message(chat_id, text, parse_mode='HTML'):
@@ -37,6 +38,11 @@ def safe_send_message(chat_id, text, parse_mode='HTML'):
                 bot.send_message(chat_id, text, parse_mode=None)
             except Exception as fallback_e:
                 logging.error(f"Fallback failed: {str(fallback_e)}")
+
+# Root route for health checks and basic info
+@app.route('/', methods=['GET', 'HEAD'])
+def root():
+    return jsonify({"message": "IPN Webhook Service for NOWPayments. Use /ipn endpoint for payment notifications."}), 200
 
 # Verify IPN signature
 def verify_ipn_signature(data, received_signature):
