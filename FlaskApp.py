@@ -9,10 +9,10 @@ import threading
 import os
 
 # Hardcoded configurations for testing
-TOKEN = "8098677493:AAEj4y1Yc6R3xS-kxoQZ2StLVl4uFvmkeCg"
+TOKEN = "8113977650:AAHaM7k7Rt3OHOmgJf1KwnFOSZ5y-wJXjqk"
 NOWPAYMENTS_IPN_SECRET = os.getenv('NOWPAYMENTS_IPN_SECRET', "MjL3K8sb2uOMR3kP6bUgmWB0L3t06D6n")
 ADMIN_CHAT_ID = "8191309122"
-SECOND_ADMIN_CHAT_ID = "6137428183"
+SECOND_ADMIN_CHAT_ID = "983306530"
 
 # Initialize Flask app
 app = Flask(__name__)
